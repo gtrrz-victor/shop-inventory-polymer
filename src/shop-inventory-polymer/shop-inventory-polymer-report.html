@@ -1,0 +1,58 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="shop-inventory-polymer-report">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Productos sin stock</h2>
+    <template is="dom-repeat" items=[[notStockProduct]]>
+        <p><strong>Nombre producto: </strong><span>[[item.nombre]]</span></p>
+    </template>
+    <hr/>
+    <strong>Ganancias:</strong><span>[[ganancias]] €</span>
+  </template>
+  <script>
+    /**
+     * `shop-inventory-polymer`
+     * sample wear
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class WearReport extends Polymer.Element {
+      static get is() { return 'shop-inventory-polymer-report'; }
+      static get properties() {
+        return {
+          products:{
+            type:Array
+          },
+          notStockProduct:{
+              type:Array,
+              computed:'_notStockProduct(products)'
+          },
+          ganancias:{
+              type:Number,
+              computed:'_calculateProfits(products)'
+          }
+        };
+      }
+
+      _notStockProduct(products){
+          return products.filter((item)=>{return item.stock<item.ventas})
+      }
+      _calculateProfits(products){
+        console.log('Report_products: ', products);
+          return products.reduce((profit,item)=>{
+              return profit+(parseFloat(item.precio) * parseFloat(item.ventas));
+          },0);
+      }
+    }
+
+    window.customElements.define(WearReport.is, WearReport);
+  </script>
+</dom-module>

@@ -1,0 +1,64 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="./shop-inventory-polymer-mixin.html">
+<link rel="import" href="./shop-inventory-polymer-dm.html">
+<link rel="import" href="./shop-inventory-polymer-list.html"> 
+<link rel="import" href="./shop-inventory-polymer-form.html"> 
+<link rel="import" href="./shop-inventory-polymer-report.html"> 
+
+<dom-module id="shop-inventory-polymer">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <shop-inventory-polymer-dm id="wearDM" products={{products}}></shop-inventory-polymer-dm>
+    <shop-inventory-polymer-list id="wearList" on-product-remove="removeProduct" on-product-modify="modifyProduct" products=[[products]]></shop-inventory-polymer-list>
+    <button on-click="newProduct">Añadir</button>
+    <shop-inventory-polymer-report products=[[products]]></shop-inventory-polymer-report>
+    <template is="dom-if" if="{{productToModify}}">  
+      <shop-inventory-polymer-form id="wearForm" product="{{productToModify}}" on-product-saved="saveProduct"></shop-inventory-polymer-form>
+    </template>
+  </template>
+  <script>
+    /**
+     * `shop-inventory-polymer`
+     * sample wear
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class Wear extends ShopInventoryMixin(Polymer.Element) {
+      static get is() { return 'shop-inventory-polymer'; }
+      static get properties() {
+        return {
+          products:{
+            type:Array,
+            value:[]
+          },
+          productToModify:{
+            type:Object,
+            value:undefined
+          }
+        };
+      }
+      removeProduct(evt){
+          this.$.wearDM.remove(evt.detail.productId);
+      }
+      modifyProduct(evt){
+        this.set('productToModify', this.$.wearDM.getProduct(evt.detail.productId));
+      }
+      saveProduct(evt){
+        this.$.wearDM.modify(evt.detail.product);
+        this.set('productToModify',undefined);
+      }
+      newProduct(){
+        this.set('productToModify',{id:this._createRandomId(1, 1000)})
+      }
+    }
+
+    window.customElements.define(Wear.is, Wear);
+  </script>
+</dom-module>

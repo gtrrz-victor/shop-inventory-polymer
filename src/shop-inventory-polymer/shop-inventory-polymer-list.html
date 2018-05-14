@@ -1,0 +1,63 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="shop-inventory-polymer-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+<hr/>
+        <template is="dom-repeat" items="[[products]]">
+                <div class="product">
+            <p><strong>Nombre:</strong><span>[[item.nombre]]</span></p>
+            <p><strong>Precio:</strong><span>[[item.precio]]</span></p>
+            <p><strong>Tallas:</strong><span>[[item.tallas]]</span></p>
+            <p><strong>Stock:</strong><span>[[item.stock]]</span></p>
+            <p><strong>Ventas:</strong><span>[[item.ventas]]</span></p>
+            <button on-click="modifyProduct" data-id$="[[item.id]]">Editar</button>
+            <button on-click="removeProduct" data-id$="[[item.id]]">Eliminar</button>
+            </div>
+        <hr/>
+        </template>
+
+
+
+
+  </template>
+  <script>
+    /**
+     * `shop-inventory-polymer`
+     * sample wear
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class WearList extends Polymer.Element {
+      static get is() { return 'shop-inventory-polymer-list'; }
+      static get properties() {
+        return {
+          products:{
+            type:Array,
+            value:[]
+          }
+        };
+      }
+      modifyProduct(evt){
+        const id = evt.target.dataset.id;
+        this.dispatchEvent(new CustomEvent('product-modify',  {bubbles: true, composed: true, detail: {productId:id}}));
+     
+      }
+      removeProduct(evt){
+        const id = evt.target.dataset.id;
+        this.dispatchEvent(new CustomEvent('product-remove',  {bubbles: true, composed: true, detail: {productId:id}}));
+      }
+
+    }
+
+    window.customElements.define(WearList.is, WearList);
+  </script>
+</dom-module>

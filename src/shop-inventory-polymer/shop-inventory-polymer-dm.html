@@ -1,0 +1,44 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./shop-inventory-polymer-dp.html">
+
+<dom-module id="shop-inventory-polymer-dm">
+  <template>
+        <shop-inventory-polymer-dp id="wearDP"></shop-inventory-polymer-dp>
+  </template>
+  <script>
+    class WearDM extends Polymer.Element {
+      static get is() { return 'shop-inventory-polymer-dm'; }
+      static get properties() {
+        return {
+          products:{
+            type:Array,
+            value:[],
+            notify:true
+          }
+        };
+      }
+      getProduct(productId){
+          return Object.assign({},this.products.find((p)=>p.id==productId));
+      }
+      add(product){
+          this.set('products',this.products.concat(product))
+      }
+      remove(productId){
+          this.set('products',this.products.filter((p)=>{return productId != p.id}));
+      }
+      modify(product){
+          const products = this.products.filter((p)=>{return product.id != p.id});
+          this.set('products',products.concat(product));
+      }
+      ready(){
+        super.ready();
+        this.$.wearDP.addEventListener('product-loaded',(evt)=>{
+          this.set('products',evt.detail.products)
+        });
+        this.$.wearDP.load();
+      }
+    }
+
+    window.customElements.define(WearDM.is, WearDM);
+  </script>
+</dom-module>

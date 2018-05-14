@@ -1,0 +1,47 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./shop-inventory-polymer-mixin.html">
+
+<dom-module id="shop-inventory-polymer-dp">
+  <script>
+    class WearDP extends ShopInventoryMixin(Polymer.Element) {
+      static get is() { return 'shop-inventory-polymer-dp'; }
+      
+      load(){
+        const products = [
+                {
+                    id: this._createRandomId(1, 1000),
+                    nombre: 'bb',
+                    precio: 120,
+                    tallas: ['L'],
+                    stock: 100,
+                    ventas: 50
+                },   {
+                    id: this._createRandomId(1, 1000),
+                    nombre: 'aa',
+                    precio: 1200,
+                    tallas: ['L','M'],
+                    stock: 100,
+                    ventas: 500
+                },   {
+                    id: this._createRandomId(1, 1000),
+                    nombre: 'cc',
+                    precio: 12,
+                    tallas: ['L'],
+                    stock: 100,
+                    ventas: 50
+                }
+            ];
+        this.dispatchEvent(new CustomEvent('product-loaded',  {bubbles: true, composed: true, detail: {products:products}}));
+       
+          console.log('load: ');/*
+        setTimeout(()=>{
+            
+            this.dispatchEvent(new CustomEvent('product-loaded',  {bubbles: true, composed: true, detail: {products:products}}));
+        },500)*/
+      }
+
+    }
+
+    window.customElements.define(WearDP.is, WearDP);
+  </script>
+</dom-module>

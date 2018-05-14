@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>shop-inventory-polymer test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="../src/shop-inventory-polymer/shop-inventory-polymer.html">
+    <link rel="import" href="../src/shop-inventory-polymer/shop-inventory-polymer-form.html">
+  </head>
+  <body>
+
+    <test-fixture id="BasicWear">
+      <template>
+        <shop-inventory-polymer></shop-inventory-polymer>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="BasicWearForm">
+        <template>
+          <shop-inventory-polymer-form></shop-inventory-polymer-form>
+        </template>
+    </test-fixture>
+
+    <script>
+
+       suite('shop-inventory-polymer-form', () => {
+         const wearForm = fixture('BasicWearForm');
+         const productNameExpected = 'prueba';
+        setup(function() {
+          wearForm.product={nombre:productNameExpected};
+        });
+        test('instantiating the element with default properties works', () => {
+          const elementShadowRoot = wearForm.shadowRoot;
+          assert.equal(productNameExpected,elementShadowRoot.querySelector('input[name="Nombre"]').value)
+        });
+      });
+
+      suite('shop-inventory-polymer', () => {
+        /*setup(function() {
+          stub('shop-inventory-polymer-dp', {
+            load: function() {
+              this.dispatchEvent(new CustomEvent('product-loaded',  {bubbles: true, composed: true, detail: {products:[]}}));
+            }
+          });
+        });*/
+        test('instantiating the element with default properties works', (done) => {
+          stub('shop-inventory-polymer-dp', {
+            load: function() {
+              const products = [{
+                    id: 893
+                }];
+              this.dispatchEvent(new CustomEvent('product-loaded',  {bubbles: true, composed: true, detail: {products:products}}));
+            }
+          });
+          const element = fixture('BasicWear');
+          const productSizeExpected = 1;
+          const elementShadowRoot = element.shadowRoot;
+          flush(function() {
+            const productsSize = element.$.wearList.shadowRoot.querySelectorAll('div.product').length
+            assert.equal(productSizeExpected,productsSize);
+            done();
+          });
+        });
+      });
+    </script>
+
+  </body>
+</html>

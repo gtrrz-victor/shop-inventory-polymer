@@ -1,0 +1,52 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="shop-inventory-polymer-form">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <label for="Nombre">Nombre</label>
+    <input type="text" value="{{product.nombre::input}}" name="Nombre">
+    <label for="Precio">Precio</label>
+    <input type="number" value="{{product.precio::input}}" name="Precio">
+    <label for="Tallas">Tallas</label>
+    <input type="text" value="{{product.tallas::input}}" name="Tallas">
+    <label for="Stock">Stock</label>
+    <input type="number" value="{{product.stock::input}}" name="Stock">
+    <label for="Ventas">Ventas</label>
+    <input type="number" value="{{product.ventas::input}}" name="Ventas">
+    <button on-click="save">Guardar</button>
+  </template>
+  <script>
+    /**
+     * `shop-inventory-polymer`
+     * sample wear
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class WearForm extends Polymer.Element {
+      static get is() { return 'shop-inventory-polymer-form'; }
+      static get properties() {
+        return {
+          product:{
+            id: {type:Number},
+            nombre: {type:String},
+            precio: {type:Number},
+            tallas: {type:Array},
+            stock: {type:Number},
+            ventas: {type:Number}
+          }
+        };
+      }
+      save(){
+        this.dispatchEvent(new CustomEvent('product-saved',  {bubbles: true, composed: true, detail: {product:this.product}}));
+      }
+    }
+
+    window.customElements.define(WearForm.is, WearForm);
+  </script>
+</dom-module>

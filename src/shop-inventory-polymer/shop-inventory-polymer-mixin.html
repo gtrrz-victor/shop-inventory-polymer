@@ -1,0 +1,7 @@
+<script>
+    ShopInventoryMixin = (baseClass) => class extends baseClass {
+      _createRandomId(min, max) {
+        return Math.floor((Math.random() * max) + min);
+      }
+    };
+  </script>
