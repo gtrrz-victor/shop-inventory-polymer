@@ -1,0 +1,38 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="show-items">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+        <template is="dom-repeat" items="[[items]]">
+            <div class="item">
+                <p><strong>Nombre:</strong><span>[[item]]</span></p>
+                <button on-click="remove" data-id$="[[item]]">Eliminar</button>
+            </div>
+        </template>
+  </template>
+  <script>
+    class ShowItems extends Polymer.Element {
+      static get is() { return 'show-items'; }
+      static get properties() {
+        return {
+          items:{
+            type:Array,
+            value:[]
+          }
+        };
+      }
+      remove(evt){
+        const id = evt.target.dataset.id;
+        this.dispatchEvent(new CustomEvent('remove',  {bubbles: true, composed: true, detail: {item:id}}));
+      }
+
+    }
+
+    window.customElements.define(ShowItems.is, ShowItems);
+  </script>
+</dom-module>

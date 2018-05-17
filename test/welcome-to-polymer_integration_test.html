@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>shop-inventory-polymer test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="../src/welcome-to-polymer/welcome-to-polymer.html">
+  </head>
+  <body>
+
+    <test-fixture id="itemManagerEmpty">
+      <template>
+        <welcome-to-polymer></welcome-to-polymer>
+      </template>
+    </test-fixture>
+
+
+
+    <script>
+
+       suite('item manager integration tests', () => {
+         let itemManager;
+         setup(function(){
+          itemManager = fixture('itemManagerEmpty');
+         });
+        test('When add new item should add new item on list', (done) => {
+          const nameToAdd = 'minomnbre';
+          const numItemsExpected = 1; 
+
+          itemManager.$.addItem.set('item', nameToAdd);
+          itemManager.$.addItem.shadowRoot.querySelector('button').click();
+          flush(function(){
+            assert.equal(numItemsExpected,itemManager.$.showItems.shadowRoot.querySelectorAll('.item').length);
+            done();
+          })
+        });
+
+        test('When remove item should remove the item on list', (done) => {
+          const numItemsExpected = 0; 
+          
+          itemManager.items = ['item 1'];
+          flush(function(){
+            itemManager.$.showItems.shadowRoot.querySelector('.item button').click();
+            flush(function(){
+              assert.equal(numItemsExpected,itemManager.$.showItems.shadowRoot.querySelectorAll('.item').length);
+              done();
+            })
+          });
+        });
+      });
+    </script>
+
+  </body>
+</html>

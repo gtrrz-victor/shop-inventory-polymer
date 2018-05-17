@@ -1,0 +1,40 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./show-items.html"> 
+<link rel="import" href="./add-item.html"> 
+
+<dom-module id="welcome-to-polymer">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <add-item id="addItem"></add-item>
+    <hr/>
+    <show-items id="showItems" items=[[items]]></show-items>
+  </template>
+  <script>
+    class WelcomePoylmer extends Polymer.Element {
+      static get is() { return 'welcome-to-polymer'; }
+      static get properties() {
+        return {
+          items:{
+            type:Array,
+            value:[]
+          }
+        };
+      }
+      ready(){
+          super.ready();
+          this.$.addItem.addEventListener('added',(evt)=>{
+            this.set('items',this.items.concat(evt.detail.item))
+          });
+          this.$.showItems.addEventListener('remove',(evt)=>{
+            this.set('items',this.items.filter((item)=>{return item !== evt.detail.item;}))
+          });
+      }
+    }
+
+    window.customElements.define(WelcomePoylmer.is, WelcomePoylmer);
+  </script>
+</dom-module>

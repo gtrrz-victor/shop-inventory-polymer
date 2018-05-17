@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>shop-inventory-polymer test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="../src/welcome-to-polymer/add-item.html">
+  </head>
+  <body>
+
+    <test-fixture id="addItemFixture">
+      <template>
+        <add-item></add-item>
+      </template>
+    </test-fixture>
+
+    <script>
+
+       suite('add-item', () => {
+        const addItem = fixture('addItemFixture');
+        const nameExpected = 'minombre';
+        test('When add new item should dispatch added event', (done) => {
+          const elementShadowRoot = addItem.shadowRoot;
+          addItem.addEventListener('added',(evt)=>{
+            assert.equal(nameExpected,evt.detail.item);
+            done();
+          });
+          addItem.set('nombre',nameExpected);
+          flush(function() {
+            assert.equal(nameExpected,elementShadowRoot.querySelector('input').value);
+            elementShadowRoot.querySelector('button').click()
+          });
+        });
+      });
+    </script>
+
+  </body>
+</html>

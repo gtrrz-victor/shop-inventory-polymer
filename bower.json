@@ -1,7 +1,7 @@
 {
   "name": "shop-inventory-polymer",
   "description": "sample wear",
-  "main": "shop-inventory-polymer.html",
+  "main": "src/welcome-to-polymer.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0"
   },

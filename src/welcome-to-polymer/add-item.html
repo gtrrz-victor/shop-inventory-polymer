@@ -1,0 +1,31 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="add-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <label>Nombre</label>
+    <input type="text" value="{{nombre::input}}" name="Nombre">
+    <button on-click="save">Guardar</button>
+  </template>
+  <script>
+    class AddItem extends Polymer.Element {
+      static get is() { return 'add-item'; }
+      static get properties() {
+        return {
+          nombre:{
+            type:String
+          }
+        };
+      }
+      save(){
+        this.dispatchEvent(new CustomEvent('added',  {bubbles: true, composed: true, detail: {item:this.nombre}}));
+      }
+    }
+
+    window.customElements.define(AddItem.is, AddItem);
+  </script>
+</dom-module>
